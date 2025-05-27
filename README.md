@@ -1,125 +1,201 @@
-# Autoencoder Ggrayscale2Color Landscape From Scratch
+# Autoencoder Grayscale2Color Landscape 🛡️
+
+[![huggingface-hub](https://img.shields.io/badge/huggingface--hub-orange.svg?logo=huggingface)](https://huggingface.co/docs/hub)
+[![Pillow](https://img.shields.io/badge/Pillow-%2300A1D6.svg)](https://pypi.org/project/pillow/)
+[![numpy](https://img.shields.io/badge/numpy-%23013243.svg?logo=numpy)](https://numpy.org/)
+[![tensorflow](https://img.shields.io/badge/tensorflow-%23FF6F00.svg?logo=tensorflow)](https://www.tensorflow.org/)
+[![gradio](https://img.shields.io/badge/gradio-yellow.svg?logo=gradio)](https://gradio.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Introduction
+Transform grayscale landscape images into vibrant, full-color visuals with this autoencoder model. Built from scratch, this project leverages deep learning to predict color channels (a*b* in L*a*b* color space) from grayscale inputs, delivering impressive results with a sleek, minimalist design. 🌄
+
+## Key Features
+- 📸 Converts grayscale landscape images to vivid RGB.
+- 🧠 Custom autoencoder with spatial attention for enhanced detail.
+- ⚡ Optimized for high-quality inference at 512x512 resolution.
+- 📊 Achieves a PSNR of 21.70 on the validation set.
+
+## Notebook
+Explore the implementation in our Jupyter notebook:  
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
+[![Open in SageMaker](https://studiolab.sagemaker.aws/studiolab.svg)](https://studiolab.sagemaker.aws/import/github/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
+[![Open in Deepnote](https://deepnote.com/buttons/launch-in-deepnote-small.svg)](https://deepnote.com/launch?url=https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
+[![JupyterLab](https://img.shields.io/badge/Launch-JupyterLab-orange?logo=Jupyter)](https://mybinder.org/v2/gh/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/main?filepath=autoencoder-grayscale-to-color-landscape.ipynb)
+[![View on GitHub](https://img.shields.io/badge/View%20on-GitHub-181717?logo=github)](https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
 
 ## Dataset
-See at [README Dataset](./dataset/README.md)
+Details about the dataset are available in the [README Dataset](./dataset/README.md). 📂
 
-## Demostration
-[HugginFace Demo](https://huggingface.co/spaces/danhtran2mind/autoencoder-grayscale2color-landscape)
+## From Scratch Model
+Custom-built autoencoder with a spatial attention mechanism, trained **FROM SCRATCH** to predict a*b* color channels from grayscale (L*) inputs. 🧩
 
-## Metrics
-PSNR
-- Validation set: 21.70
+## Demonstration
+Experience the brilliance of our cutting-edge technology! Transform grayscale landscapes into vibrant colors with our interactive demo.
+
+[![HuggingFace Space](https://img.shields.io/badge/%F0%9F%A4%97-HuggingFace%20Space-blue)](https://huggingface.co/spaces/danhtran2mind/autoencoder-grayscale2color-landscape)
+
+![App Interface](./examples/gradio_app.png)
+
+## Installation
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch
+cd /autoencoder-grayscale2color-landscape-from-scratch
+```
+
+### Step 2: Install Dependencies
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
+### Method 1: Using the Gradio App
+Run the Gradio application to interact with the model via a web interface.
 
-### Download Model
-```bash
-git clone https://huggingface.co/danhtran2mind/autoencoder-grayscale2color-landscape
+```python
+python app.py
 ```
-```bash
-cd autoencoder-grayscale2color-landscape
-git lfs pull
-```
-### Import Libraries
+
+This launches a local server at `localhost:7860`, where you can upload grayscale images and view colorized results.
+
+### Method 2: Using Python Code
+Follow these steps to colorize images programmatically using Python.
+
+#### 1. Import Required Libraries
+Install and import the necessary libraries for image processing and model inference.
+
 ```python
 from PIL import Image
 import os
 import numpy as np
 import tensorflow as tf
 import requests
-from skimage.color import lab2rgb
 import matplotlib.pyplot as plt
+from skimage.color import lab2rgb
 from models.auto_encoder_gray2color import SpatialAttention
 ```
-### Load Model file
+
+#### 2. Load the Pre-trained Model
+Download and load the autoencoder model from a remote source if it’s not already available locally.
+
 ```python
-# Load the saved model once at startup
 load_model_path = "./ckpts/best_model.h5"
+os.makedirs(os.path.dirname(load_model_path), exist_ok=True)
+
+if not os.path.exists(load_model_path):
+    url = "https://huggingface.co/danhtran2mind/autoencoder-grayscale2color-landscape/resolve/main/ckpts/best_model.h5"
+    print(f"Downloading model from {url}...")
+    with requests.get(url, stream=True) as response:
+        response.raise_for_status()
+        with open(load_model_path, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+    print("Model downloaded successfully.")
 
 print(f"Loading model from {load_model_path}...")
 loaded_autoencoder = tf.keras.models.load_model(
-    load_model_path,
-    custom_objects={'SpatialAttention': SpatialAttention}
+    load_model_path, custom_objects={"SpatialAttention": SpatialAttention}
 )
+print("Model loaded successfully.")
 ```
 
-### Define Functions
+#### 3. Define Image Processing Functions
+These functions handle image preprocessing, colorization, and visualization.
+
 ```python
 def process_image(input_img):
-    # Store original input dimensions
+    """Convert a grayscale image to color using the autoencoder."""
+    # Store original dimensions
     original_width, original_height = input_img.size
-
-    # Convert PIL Image to grayscale and resize to model input size
-    img = input_img.convert("L")  # Convert to grayscale (single channel)
-    img = img.resize((WIDTH, HEIGHT))  # Resize to 512x512 for model
-    img_array = tf.keras.preprocessing.image.img_to_array(img) / 255.0  # Normalize to [0, 1]
-    img_array = img_array[None, ..., 0:1]  # Add batch dimension, shape: (1, 512, 512, 1)
-
-    # Run inference (assuming loaded_autoencoder predicts a*b* channels)
-    output_array = loaded_autoencoder.predict(img_array)  # Shape: (1, 512, 512, 2) for a*b*
-    print("output_array shape: ", output_array.shape)
-
-    # Extract L* (grayscale input) and a*b* (model output)
-    L_channel = img_array[0, :, :, 0] * 100.0  # Denormalize L* to [0, 100]
-    ab_channels = output_array[0] * 128.0  # Denormalize a*b* to [-128, 128]
-
-    # Combine L*, a*, b* into a 3-channel L*a*b* image
-    lab_image = np.stack([L_channel, ab_channels[:, :, 0], ab_channels[:, :, 1]], axis=-1)  # Shape: (512, 512, 3)
-
-    # Convert L*a*b* to RGB
-    rgb_array = lab2rgb(lab_image)  # Convert to RGB, output in [0, 1]
-    rgb_array = np.clip(rgb_array, 0, 1) * 255.0  # Scale to [0, 255]
-    rgb_image = Image.fromarray(rgb_array.astype(np.uint8), mode="RGB")  # Create RGB PIL image
-
-    # Resize output image to match input image resolution
-    rgb_image = rgb_image.resize((original_width, original_height), Image.Resampling.LANCZOS)
-
-    return rgb_image
-
-def process_and_plot_images(input_path):
-    # Read input image
-    input_img = Image.open(input_path)
     
-    # Process the image (placeholder for your process_image function)
+    # Preprocess: Convert to grayscale, resize, and normalize
+    img = input_img.convert("L").resize((512, 512))
+    img_array = tf.keras.preprocessing.image.img_to_array(img) / 255.0
+    img_array = img_array[None, ..., 0:1]  # Add batch dimension
+
+    # Predict color channels
+    output_array = loaded_autoencoder.predict(img_array)
+    
+    # Reconstruct LAB image
+    L_channel = img_array[0, :, :, 0] * 100.0  # Scale L channel
+    ab_channels = output_array[0] * 128.0      # Scale ab channels
+    lab_image = np.stack([L_channel, ab_channels[:, :, 0], ab_channels[:, :, 1]], axis=-1)
+    
+    # Convert to RGB and clip values
+    rgb_array = lab2rgb(lab_image)
+    rgb_array = np.clip(rgb_array, 0, 1) * 255.0
+    
+    # Create and resize output image
+    rgb_image = Image.fromarray(rgb_array.astype(np.uint8), mode="RGB")
+    return rgb_image.resize((original_width, original_height), Image.Resampling.LANCZOS)
+
+def process_and_save_image(image_path):
+    """Process an image and save the colorized result."""
+    input_img = Image.open(image_path)
     output_img = process_image(input_img)
-    
-    # Save output image to output.jpg
     output_img.save("output.jpg")
-    
     return input_img, output_img
 
-def plot_in_out_images(input_img, output_img):
-    # Create a figure with two subplots for input and output images
-    plt.figure(figsize=(17, 8), dpi=300)  # Set DPI to 300
+def plot_images(input_img, output_img):
+    """Display input and output images side by side."""
+    plt.figure(figsize=(17, 8), dpi=300)
     
-    # Plot input image
+    # Plot input grayscale image
     plt.subplot(1, 2, 1)
-    plt.imshow(input_img, cmap='gray')
-    plt.title("Input Image")
-    plt.axis('off')  # Hide axes for cleaner display
+    plt.imshow(input_img, cmap="gray")
+    plt.title("Input Grayscale Image")
+    plt.axis("off")
     
-    # Plot output image
+    # Plot output colorized image
     plt.subplot(1, 2, 2)
-    plt.imshow(output_img, cmap='gray')
-    plt.title("Output Image")
-    plt.axis('off')  # Hide axes for cleaner display
+    plt.imshow(output_img)
+    plt.title("Colorized Output Image")
+    plt.axis("off")
     
-    # Save the figure as output.jpg with 300 DPI
-    plt.savefig("output.jpg", dpi=300, bbox_inches='tight')
-    
-    # Show the plot
+    # Save and display the plot
+    plt.savefig("output.jpg", dpi=300, bbox_inches="tight")
     plt.show()
 ```
-### Inference
+
+#### 4. Perform Inference
+Run the colorization process on a sample image.
+
 ```python
-# Example usage
+# Set image dimensions and path
 WIDTH, HEIGHT = 512, 512
-# Replace 'input_image.jpg' with the path to your image
-image_path = "<input_image.jpg>"
-input_img, output_img = process_and_plot_images(image_path)
+image_path = "<path_to_input_image.jpg>"  # Replace with your image path
 
-plot_in_out_images(input_img, output_img)
+# Process and visualize the image
+input_img, output_img = process_and_save_image(image_path)
+plot_images(input_img, output_img)
 ```
-### Example Output
-![Plot Image](./examples/model_output.png)
 
+#### 5. Example Output
+The output will be a side-by-side comparison of the input grayscale image and the colorized result, saved as `output.jpg`. For a sample result, see the example below:
+![Output Image](./examples/model_output.png) 🎨
+
+## Training Hyperparameters
+- **Resolution**: 512x512
+- **Color Space**: L*a*b*
+- **Custom Layer**: SpatialAttention
+- **Model File**: `best_model.h5`
+
+## Metrics
+- **PSNR (Validation)**: 21.70 📈
+
+## Environment
+- Python 3.11.11
+- Libraies
+    ```
+    numpy==1.26.4
+    tensorflow==2.18.0
+    opencv-python==4.11.0.86
+    scikit-image==0.25.2
+    matplotlib==3.7.2
+    scikit-image==0.25.2
+```
+
+## Contact
+For questions or issues, reach out via the [GitHub Issues](https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/issues) tab. 🚀
