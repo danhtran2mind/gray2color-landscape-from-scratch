@@ -1,12 +1,11 @@
 # Landscape Pictures Dataset Processing
 
-[![Kaggle](https://img.shields.io/badge/Dataset-Kaggle-blue.svg)](https://www.kaggle.com/datasets/arnaud58/landscape-pictures)
-
 This README provides instructions for downloading, extracting, and processing the landscape pictures dataset from Kaggle.
 
 ## Dataset Source
 
-The dataset is sourced from Kaggle: Landscape Pictures by Arnaud58. Follow this link: [Kaggle Dataset](https://www.kaggle.com/datasets/arnaud58/landscape-pictures)
+The dataset is sourced from Kaggle: Landscape Pictures by Arnaud58 [![Kaggle](https://img.shields.io/badge/Dataset-Kaggle-blue.svg)](https://www.kaggle.com/datasets/arnaud58/landscape-pictures)
+. Follow this link: [Kaggle Dataset](https://www.kaggle.com/datasets/arnaud58/landscape-pictures)
 
 ## Setup
 
