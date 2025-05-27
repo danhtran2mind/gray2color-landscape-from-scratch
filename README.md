@@ -187,7 +187,7 @@ The output will be a side-by-side comparison of the input grayscale image and th
 - **Early Stopping**: Monitors `val_loss`, patience of 20 epochs, restores best weights.
 - **ReduceLROnPlateau**: Monitors `val_loss`, reduces learning rate by 50% after 5 epochs, minimum learning rate of 1e-6.
 - **BackupAndRestore**: Saves checkpoints to `./ckpts/backup`.
-- 
+  
 ## Metrics
 - **PSNR (Validation)**: 21.70 📈
 
