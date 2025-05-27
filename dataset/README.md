@@ -1,4 +1,3 @@
-```markdown
 # Landscape Pictures Dataset Processing
 
 [![Kaggle](https://img.shields.io/badge/Dataset-Kaggle-blue.svg)](https://www.kaggle.com/datasets/arnaud58/landscape-pictures)
@@ -39,4 +38,3 @@ with zipfile.ZipFile('dataset/landscape-pictures.zip', 'r') as zip_ref:
 ```
 
 This will extract the dataset into the `./dataset` directory.
-```
