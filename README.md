@@ -174,7 +174,7 @@ plot_images(input_img, output_img)
 
 #### 5. Example Output
 The output will be a side-by-side comparison of the input grayscale image and the colorized result, saved as `output.jpg`. For a sample result, see the example below:
-![Output Image](./examples/model_output.png) 🎨
+![Output Image](./examples/model_output.png)
 
 ## Training Hyperparameters
 - **Resolution**: 512x512
@@ -195,7 +195,7 @@ The output will be a side-by-side comparison of the input grayscale image and th
     scikit-image==0.25.2
     matplotlib==3.7.2
     scikit-image==0.25.2
-```
+    ```
 
 ## Contact
 For questions or issues, reach out via the [GitHub Issues](https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/issues) tab. 🚀
