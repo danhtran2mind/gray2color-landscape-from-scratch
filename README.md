@@ -42,7 +42,7 @@ Experience the brilliance of our cutting-edge technology! Transform grayscale la
 ### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch
-cd /autoencoder-grayscale2color-landscape-from-scratch
+cd autoencoder-grayscale2color-landscape-from-scratch
 ```
 
 ### Step 2: Install Dependencies
