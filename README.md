@@ -4,7 +4,7 @@
 See at [README Dataset](./dataset/README.md)
 
 ## Demostration
-{HugginFace Demo](https://huggingface.co/spaces/danhtran2mind/autoencoder-grayscale2color-landscape)
+[HugginFace Demo](https://huggingface.co/spaces/danhtran2mind/autoencoder-grayscale2color-landscape)
 
 ## Metrics
 PSNR
