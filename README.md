@@ -121,5 +121,5 @@ input_img, output_img = process_and_plot_images(image_path)
 plot_in_out_images(input_img, output_img)
 ```
 ### Example Output
-![Plot Image](./examples/model_output.jpg)
+![Plot Image](./examples/model_output.png)
 
