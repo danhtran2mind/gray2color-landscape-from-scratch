@@ -177,11 +177,17 @@ The output will be a side-by-side comparison of the input grayscale image and th
 ![Output Image](./examples/model_output.png)
 
 ## Training Hyperparameters
-- **Resolution**: 512x512
+- **Resolution**: 512x512 pixels
 - **Color Space**: L*a*b*
 - **Custom Layer**: SpatialAttention
 - **Model File**: `best_model.h5`
+- **Epochs**: 100
 
+## Callbacks
+- **Early Stopping**: Monitors `val_loss`, patience of 20 epochs, restores best weights.
+- **ReduceLROnPlateau**: Monitors `val_loss`, reduces learning rate by 50% after 5 epochs, minimum learning rate of 1e-6.
+- **BackupAndRestore**: Saves checkpoints to `./ckpts/backup`.
+- 
 ## Metrics
 - **PSNR (Validation)**: 21.70 📈
 
