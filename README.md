@@ -18,11 +18,11 @@ Transform grayscale landscape images into vibrant, full-color visuals with this 
 
 ## Notebook
 Explore the implementation in our Jupyter notebook:  
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
-[![Open in SageMaker](https://studiolab.sagemaker.aws/studiolab.svg)](https://studiolab.sagemaker.aws/import/github/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
-[![Open in Deepnote](https://deepnote.com/buttons/launch-in-deepnote-small.svg)](https://deepnote.com/launch?url=https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
-[![JupyterLab](https://img.shields.io/badge/Launch-JupyterLab-orange?logo=Jupyter)](https://mybinder.org/v2/gh/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/main?filepath=autoencoder-grayscale-to-color-landscape.ipynb)
-[![View on GitHub](https://img.shields.io/badge/View%20on-GitHub-181717?logo=github)](https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/danhtran2mind/grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
+[![Open in SageMaker](https://studiolab.sagemaker.aws/studiolab.svg)](https://studiolab.sagemaker.aws/import/github/danhtran2mind/grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
+[![Open in Deepnote](https://deepnote.com/buttons/launch-in-deepnote-small.svg)](https://deepnote.com/launch?url=https://github.com/danhtran2mind/grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
+[![JupyterLab](https://img.shields.io/badge/Launch-JupyterLab-orange?logo=Jupyter)](https://mybinder.org/v2/gh/danhtran2mind/grayscale2color-landscape-from-scratch/main?filepath=autoencoder-grayscale-to-color-landscape.ipynb)
+[![View on GitHub](https://img.shields.io/badge/View%20on-GitHub-181717?logo=github)](https://github.com/danhtran2mind/grayscale2color-landscape-from-scratch/blob/main/notebooks/autoencoder-grayscale-to-color-landscape.ipynb)
 
 ## Dataset
 Details about the dataset are available in the [README Dataset](./dataset/README.md). 📂
@@ -41,8 +41,8 @@ Experience the brilliance of our cutting-edge technology! Transform grayscale la
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch
-cd autoencoder-grayscale2color-landscape-from-scratch
+git clone https://github.com/danhtran2mind/grayscale2color-landscape-from-scratch
+cd grayscale2color-landscape-from-scratch
 ```
 
 ### Step 2: Install Dependencies
@@ -218,4 +218,4 @@ The output will be a side-by-side comparison of the input grayscale image and th
     ```
 
 ## Contact
-For questions or issues, reach out via the [GitHub Issues](https://github.com/danhtran2mind/autoencoder-grayscale2color-landscape-from-scratch/issues) tab. 🚀
+For questions or issues, reach out via the [GitHub Issues](https://github.com/danhtran2mind/grayscale2color-landscape-from-scratch/issues) tab. 🚀
