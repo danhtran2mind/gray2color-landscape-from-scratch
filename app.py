@@ -6,7 +6,7 @@ import tensorflow as tf
 import requests
 from skimage.color import lab2rgb
 
-from models.auto_encoder_gray2color import SpatialAttention
+from models.autoencoder_gray2color import SpatialAttention
 
 WIDTH, HEIGHT = 512, 512
 
