@@ -7,7 +7,6 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-# Spatial Attention Layer
 # Define SpatialAttention layer
 class SpatialAttention(tf.keras.layers.Layer):
     def __init__(self, kernel_size=7, **kwargs):
@@ -81,10 +80,6 @@ def build_autoencoder(height, width,):
     decoded = Conv2D(2, (3, 3), activation=None, padding='same')(x)
     
     return Model(input_img, decoded)
-
-
-
-
 
 if __name__ == "__main__":
     # Define constants
