@@ -11,7 +11,7 @@ from models.auto_encoder_gray2color import SpatialAttention
 WIDTH, HEIGHT = 512, 512
 
 # Load the saved model once at startup
-load_model_path = "./ckpts/best_model.h5"
+load_model_path = "./ckpts/autoencoder/autoencoder_colorization_model.h5"
 if not os.path.exists(load_model_path):
     os.makedirs(os.path.dirname(load_model_path), exist_ok=True)
     url = "https://huggingface.co/danhtran2mind/autoencoder-grayscale2color-landscape/resolve/main/ckpts/best_model.h5"
