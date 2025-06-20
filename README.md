@@ -1,11 +1,29 @@
-# Autoencoder Grayscale2Color Landscape 🛡️
+<div align="center">
+    <h1>Grayscale2Color Landscape from scratch🛡️</h1>
+</div>
 
-[![huggingface-hub](https://img.shields.io/badge/huggingface--hub-orange.svg?logo=huggingface)](https://huggingface.co/docs/hub)
-[![Pillow](https://img.shields.io/badge/Pillow-%2300A1D6.svg)](https://pypi.org/project/pillow/)
-[![numpy](https://img.shields.io/badge/numpy-%23013243.svg?logo=numpy)](https://numpy.org/)
-[![tensorflow](https://img.shields.io/badge/tensorflow-%23FF6F00.svg?logo=tensorflow)](https://www.tensorflow.org/)
-[![gradio](https://img.shields.io/badge/gradio-yellow.svg?logo=gradio)](https://gradio.app/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<div align="center" style="line-height: 1;">
+    <nav class="badge-container">
+        <a href="https://huggingface.co/docs/hub" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/badge/huggingface--hub-orange.svg?logo=huggingface" alt="Hugging Face Hub">
+        </a>
+        <a href="https://pypi.org/project/pillow/" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/badge/Pillow-%2300A1D6.svg" alt="Pillow">
+        </a>
+        <a href="https://numpy.org/" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/badge/numpy-%23013243.svg?logo=numpy" alt="NumPy">
+        </a>
+        <a href="https://www.tensorflow.org/" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/badge/tensorflow-%23FF6F00.svg?logo=tensorflow" alt="TensorFlow">
+        </a>
+        <a href="https://gradio.app/" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/badge/gradio-yellow.svg?logo=gradio" alt="Gradio">
+        </a>
+        <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License">
+        </a>
+    </nav>
+</div>
 
 ## Introduction
 Transform grayscale landscape images into vibrant, full-color visuals with this autoencoder model. Built from scratch, this project leverages deep learning to predict color channels (a*b* in L*a*b* color space) from grayscale inputs, delivering impressive results with a sleek, minimalist design. 🌄
