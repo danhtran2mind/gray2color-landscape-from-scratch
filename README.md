@@ -174,23 +174,37 @@ plot_images(input_img, output_img)
 
 #### 5. Example Output
 The output will be a side-by-side comparison of the input grayscale image and the colorized result, saved as `output.jpg`. For a sample result, see the example below:
-![Output Image](./examples/model_output.png)
+![Output Image](./docs/assets/model_output.png)
 
 ## Training Hyperparameters
-- **Resolution**: 512x512 pixels
+- **Resolution**: 
+    - AutoEncoder: 512x512 pixels
+    - Transformer: 1024x1024 pixels
+    - U-net: 1024x1024 pixels
+
 - **Color Space**: L*a*b*
 - **Custom Layer**: SpatialAttention
 - **Model File**: `best_model.h5`
+    - AutoEncoder: `ckpts/autoencoder/autoencoder_colorization_model.h5`
+    - Transformer: `ckpts/transformer/transformer_colorization_model.h5`
+    - U-net: `ckpts/unet/unet_colorization_model.h5`
 - **Epochs**: 100
 
 ## Callbacks
 - **Early Stopping**: Monitors `val_loss`, patience of 20 epochs, restores best weights.
 - **ReduceLROnPlateau**: Monitors `val_loss`, reduces learning rate by 50% after 5 epochs, minimum learning rate of 1e-6.
-- **BackupAndRestore**: Saves checkpoints to `./ckpts/backup`.
+- **BackupAndRestore**: Saves checkpoints to:
+    - AutoEncoder: `ckpts/autoencoder/backup`
+    - Transformer: `ckpts/transformer/backup`
+    - U-net: `ckpts/unet/backup`
   
 ## Metrics
-- **PSNR (Validation)**: 21.70 📈
-
+**PSNR (Validation)**
+| Model | PSNR ↑| 
+|-------------|-------| 
+| AutoEncoder | 21.70 📈 | 
+| Transformer | - | 
+| U-net | - |
 ## Environment
 - Python 3.11.11
 - Libraies
