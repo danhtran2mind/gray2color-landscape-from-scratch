@@ -53,7 +53,7 @@ Experience the brilliance of our cutting-edge technology! Transform grayscale la
 
 [![HuggingFace Space](https://img.shields.io/badge/%F0%9F%A4%97-HuggingFace%20Space-blue)](https://huggingface.co/spaces/danhtran2mind/autoencoder-grayscale2color-landscape)
 
-![App Interface](./examples/gradio_app.png)
+![App Interface](./docs/assets/gradio_app.png)
 
 ## Installation
 
