@@ -218,15 +218,15 @@ The output will be a side-by-side comparison of the input grayscale image and th
   
 ## Metrics
 **PSNR (Validation)**
-| Model | PSNR ↑| 
+| Models | PSNR ↑| 
 |-------------|-------| 
-| AutoEncoder | 21.70 📈 | 
-| Transformer | - | 
-| U-net | - |
+| AutoEncoder | 21.70 dB | 
+| Transformer | **26.81 dB** | 
+| U-net | 26.55 dB |
 ## Environment
-- Python 3.11.11
+- Python v3.11.11
 - Libraies
-    ```
+    ```bash
     numpy==1.26.4
     tensorflow==2.18.0
     opencv-python==4.11.0.86
