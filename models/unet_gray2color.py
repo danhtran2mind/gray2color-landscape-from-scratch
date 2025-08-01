@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import (
     Input, Dense, Conv2D, MaxPooling2D, UpSampling2D, Concatenate,
-    BatchNormalization, LayerNormalization, Dropout, MultiHeadAttention, Add, Reshape
+    BatchNormalization, LayerNormalization, Dropout, MultiHeadAttention, Add, Reshape, Layer
 )
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
