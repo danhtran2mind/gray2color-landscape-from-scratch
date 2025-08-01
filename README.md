@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Grayscale2Color Landscape from scratch🛡️</h1>
+    <h1>Grayscale2Color Landscape from scratch🌄 </h1>
 </div>
 
 <div align="center" style="line-height: 1;">
