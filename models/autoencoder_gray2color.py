@@ -1,13 +1,10 @@
-
 import tensorflow as tf
-from tensorflow.keras.layers import (
-    Input, Conv2D, MaxPooling2D, UpSampling2D,
-    BatchNormalization, Add, Concatenate, Multiply
-)
+from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, BatchNormalization, Add, Concatenate, Multiply
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-# Define SpatialAttention layer
+tf.keras.mixed_precision.set_global_policy('float32')
+
 class SpatialAttention(tf.keras.layers.Layer):
     def __init__(self, kernel_size=7, **kwargs):
         super(SpatialAttention, self).__init__(**kwargs)
@@ -25,18 +22,14 @@ class SpatialAttention(tf.keras.layers.Layer):
         config = super(SpatialAttention, self).get_config()
         config.update({'kernel_size': self.kernel_size})
         return config
-        
-# Build Autoencoder
-def build_autoencoder(height, width,):
+
+def build_autoencoder(height, width):
     input_img = Input(shape=(height, width, 1))
-    
-    # Encoder
     x = Conv2D(96, (3, 3), activation='relu', padding='same')(input_img)
     x = BatchNormalization()(x)
     x = SpatialAttention()(x)
     x = MaxPooling2D((2, 2), padding='same')(x)
     
-    # Residual Block 1
     residual = Conv2D(192, (1, 1), padding='same')(x)
     x = Conv2D(192, (3, 3), activation='relu', padding='same')(x)
     x = BatchNormalization()(x)
@@ -46,7 +39,6 @@ def build_autoencoder(height, width,):
     x = SpatialAttention()(x)
     x = MaxPooling2D((2, 2), padding='same')(x)
     
-    # Residual Block 2
     residual = Conv2D(384, (1, 1), padding='same')(x)
     x = Conv2D(384, (3, 3), activation='relu', padding='same')(x)
     x = BatchNormalization()(x)
@@ -56,13 +48,11 @@ def build_autoencoder(height, width,):
     x = SpatialAttention()(x)
     encoded = MaxPooling2D((2, 2), padding='same')(x)
     
-    # Decoder
     x = Conv2D(384, (3, 3), activation='relu', padding='same')(encoded)
     x = BatchNormalization()(x)
     x = SpatialAttention()(x)
     x = UpSampling2D((2, 2))(x)
     
-    # Residual Block 3
     residual = Conv2D(192, (1, 1), padding='same')(x)
     x = Conv2D(192, (3, 3), activation='relu', padding='same')(x)
     x = BatchNormalization()(x)
@@ -76,15 +66,12 @@ def build_autoencoder(height, width,):
     x = BatchNormalization()(x)
     x = SpatialAttention()(x)
     x = UpSampling2D((2, 2))(x)
-    
     decoded = Conv2D(2, (3, 3), activation=None, padding='same')(x)
     
     return Model(input_img, decoded)
 
 if __name__ == "__main__":
-    # Define constants
     HEIGHT, WIDTH = 512, 512
-    # Compile model
-    autoencoder = build_autoencoder()
+    autoencoder = build_autoencoder(HEIGHT, WIDTH)
     autoencoder.summary()
     autoencoder.compile(optimizer=Adam(learning_rate=7e-5), loss=tf.keras.losses.MeanSquaredError())

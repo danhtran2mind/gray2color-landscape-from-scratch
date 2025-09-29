@@ -5,59 +5,96 @@ import numpy as np
 import tensorflow as tf
 import requests
 from skimage.color import lab2rgb
-
 from models.autoencoder_gray2color import SpatialAttention
+from models.unet_gray2color import SelfAttentionLayer
 
-WIDTH, HEIGHT = 512, 512
+# Set float32 policy
+tf.keras.mixed_precision.set_global_policy('float32')
 
-# Load the saved model once at startup
-load_model_path = "./ckpts/autoencoder/autoencoder_colorization_model.h5"
-if not os.path.exists(load_model_path):
-    os.makedirs(os.path.dirname(load_model_path), exist_ok=True)
-    url = "https://huggingface.co/danhtran2mind/autoencoder-grayscale2color-landscape/resolve/main/ckpts/best_model.h5"
-    print(f"Downloading model from {url}...")
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        with open(load_model_path, "wb") as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                f.write(chunk)
-    print("Download complete.")
+# Model-specific input shapes
+MODEL_INPUT_SHAPES = {
+    "autoencoder": (512, 512),
+    "unet": (1024, 1024),
+    "transformer": (1024, 1024)
+}
 
-print(f"Loading model from {load_model_path}...")
-loaded_autoencoder = tf.keras.models.load_model(
-    load_model_path,
-    custom_objects={'SpatialAttention': SpatialAttention}
-)
+# Define model paths
+load_model_paths = [
+    "./ckpts/autoencoder/autoencoder_colorization_model.h5",
+    "./ckpts/unet/unet_colorization_model.keras",
+    "./ckpts/transformer/transformer_colorization_model.keras"
+]
 
-def process_image(input_img):
+# Load models at startup
+models = {}
+print("Loading models...")
+for path in load_model_paths:
+    model_name = os.path.basename(os.path.dirname(path))
+    if not os.path.exists(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        url_map = {
+            "autoencoder": "ckpts/best_model.h5",
+            "unet": "ckpts/unet_colorization_model.keras",  # Replace with valid URL
+            "transformer": "ckpts/transformer_colorization_model.keras"  # Replace with valid URL
+        }
+        if model_name in url_map:
+            print(f"Downloading {model_name} model from {url_map[model_name]}...")
+            with requests.get(url_map[model_name], stream=True) as r:
+                r.raise_for_status()
+                with open(path, "wb") as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        f.write(chunk)
+            print(f"Download complete for {model_name}.")
+    
+    custom_objects = {
+        "autoencoder": {'SpatialAttention': SpatialAttention},
+        "unet": {'SelfAttentionLayer': SelfAttentionLayer},
+        "transformer": None
+    }
+    print(f"Loading {model_name} model from {path}...")
+    models[model_name] = tf.keras.models.load_model(
+        path,
+        custom_objects=custom_objects[model_name],
+        compile=False
+    )
+    models[model_name].compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=7e-5),
+        loss=tf.keras.losses.MeanSquaredError()
+    )
+    print(f"{model_name} model loaded.")
+
+print("All models loaded.")
+
+def process_image(input_img, model_name):
     # Store original input dimensions
     original_width, original_height = input_img.size
-
+    # Get model-specific input shape
+    width, height = MODEL_INPUT_SHAPES[model_name.lower()]
     # Convert PIL Image to grayscale and resize to model input size
-    img = input_img.convert("L")  # Convert to grayscale (single channel)
-    img = img.resize((WIDTH, HEIGHT))  # Resize to 512x512 for model
-    img_array = tf.keras.preprocessing.image.img_to_array(img) / 255.0  # Normalize to [0, 1]
-    img_array = img_array[None, ..., 0:1]  # Add batch dimension, shape: (1, 512, 512, 1)
-
-    # Run inference (assuming loaded_autoencoder predicts a*b* channels)
-    output_array = loaded_autoencoder.predict(img_array)  # Shape: (1, 512, 512, 2) for a*b*
-    print("output_array shape: ", output_array.shape)
-
-    # Extract L* (grayscale input) and a*b* (model output)
+    img = input_img.convert("L")
+    img = img.resize((width, height))
+    img_array = tf.keras.preprocessing.image.img_to_array(img) / 255.0
+    img_array = img_array[None, ..., 0:1]  # Shape: (1, height, width, 1)
+    
+    # Select model
+    selected_model = models[model_name.lower()]
+    # Run inference
+    output_array = selected_model.predict(img_array)  # Shape: (1, height, width, 2)
+    
+    # Extract L* and a*b*
     L_channel = img_array[0, :, :, 0] * 100.0  # Denormalize L* to [0, 100]
     ab_channels = output_array[0] * 128.0  # Denormalize a*b* to [-128, 128]
-
-    # Combine L*, a*, b* into a 3-channel L*a*b* image
-    lab_image = np.stack([L_channel, ab_channels[:, :, 0], ab_channels[:, :, 1]], axis=-1)  # Shape: (512, 512, 3)
-
-    # Convert L*a*b* to RGB
-    rgb_array = lab2rgb(lab_image)  # Convert to RGB, output in [0, 1]
-    rgb_array = np.clip(rgb_array, 0, 1) * 255.0  # Scale to [0, 255]
-    rgb_image = Image.fromarray(rgb_array.astype(np.uint8), mode="RGB")  # Create RGB PIL image
-
-    # Resize output image to match input image resolution
+    
+    # Combine L*, a*, b*
+    lab_image = np.stack([L_channel, ab_channels[:, :, 0], ab_channels[:, :, 1]], axis=-1)
+    
+    # Convert to RGB
+    rgb_array = lab2rgb(lab_image)
+    rgb_array = np.clip(rgb_array, 0, 1) * 255.0
+    rgb_image = Image.fromarray(rgb_array.astype(np.uint8), mode="RGB")
+    
+    # Resize output to original resolution
     rgb_image = rgb_image.resize((original_width, original_height), Image.Resampling.LANCZOS)
-
     return rgb_image
 
 custom_css = """
@@ -71,21 +108,33 @@ h1, .gr-title {color: #007bff !important; font-family: 'Segoe UI', sans-serif;}
 
 demo = gr.Interface(
     fn=process_image,
-    inputs=gr.Image(type="pil", label="Upload Grayscale Landscape", image_mode="L"),
+    inputs=[
+        gr.Image(type="pil", label="Upload Grayscale Landscape", image_mode="L"),
+        gr.Dropdown(
+            choices=["Autoencoder", "Unet", "Transformer"],
+            label="Select Model",
+            value="Autoencoder"
+        )
+    ],
     outputs=gr.Image(type="pil", label="Colorized Output"),
-    title="🌄 Gray2Color Landscape Autoencoder",
+    title="Grayscale2Color Landscape from scratch🌄",
     description=(
         "<div style='font-size:1.15em;line-height:1.6em;'>"
-        "Transform your <b>grayscale landscape</b> photos into vivid color with a state-of-the-art autoencoder.<br>"
-        "Simply upload a grayscale image and see the magic happen!"
+        "Transform your <b>grayscale landscape</b> photos into vivid color using advanced deep learning models.<br>"
+        "Upload a grayscale image, select a model (Autoencoder, U-Net, or Transformer), and see the results!"
         "</div>"
     ),
     theme="soft",
     css=custom_css,
     allow_flagging="never",
     examples=[
-        ["examples/example_input_1.jpg", "examples/example_output_1.jpg"],
-        ["examples/example_input_2.jpg", "examples/example_output_2.jpg"]
+        ["assets/input/input_1.jpg", "assets/autoencoder/autoencoder_output_1.jpg", "Autoencoder"],
+        ["assets/input/input_2.jpg", "assets/autoencoder/autoencoder_output_2.jpg", "Autoencoder"],
+        ["assets/input/input_1.jpg", "assets/unet/unet_output_1.jpg", "Unet"],
+        ["assets/input/input_2.jpg", "assets/unet/unet_output_2.jpg", "Unet"],
+        ["assets/input/input_1.jpg", "assets/transformer/transformer_output_1.jpg", "Transformer"],
+        ["assets/input/input_2.jpg", "assets/transformer/transformer_output_2.jpg", "Transformer"]
+    
     ]
 )
 

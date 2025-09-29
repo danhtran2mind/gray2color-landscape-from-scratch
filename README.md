@@ -51,9 +51,9 @@ Custom-built autoencoder with a spatial attention mechanism, trained **FROM SCRA
 ## Demonstration
 Experience the brilliance of our cutting-edge technology! Transform grayscale landscapes into vibrant colors with our interactive demo.
 
-[![HuggingFace Space](https://img.shields.io/badge/%F0%9F%A4%97-HuggingFace%20Space-blue)](https://huggingface.co/spaces/danhtran2mind/autoencoder-grayscale2color-landscape)
+[![HuggingFace Space](https://img.shields.io/badge/%F0%9F%A4%97-HuggingFace%20Space-blue)](https://huggingface.co/spaces/danhtran2mind/grayscale2color-landscape-from-scratch)
 
-![App Interface](./docs/assets/gradio_app.png)
+<img src="./docs/assets/gradio_app.png" alt="App Interface">
 
 ## Installation
 
@@ -192,7 +192,8 @@ plot_images(input_img, output_img)
 
 #### 5. Example Output
 The output will be a side-by-side comparison of the input grayscale image and the colorized result, saved as `output.jpg`. For a sample result, see the example below:
-![Output Image](./docs/assets/model_output.png)
+
+<img src="./docs/assets/model_output.png" alt="Model Output">
 
 ## Training Hyperparameters
 - **Resolution**: 
