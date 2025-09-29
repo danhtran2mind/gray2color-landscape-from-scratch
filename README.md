@@ -78,7 +78,7 @@ Experience the brilliance of our cutting-edge technology! Transform grayscale la
 
 [![HuggingFace Space](https://img.shields.io/badge/%F0%9F%A4%97-HuggingFace%20Space-blue)](https://huggingface.co/spaces/danhtran2mind/grayscale2color-landscape-from-scratch)
 
-<img src="./docs/assets/gradio_app.png" alt="App Interface">
+<img src="assets/gradio_app.png" alt="App Interface">
 
 ## Installation
 
@@ -218,7 +218,40 @@ plot_images(input_img, output_img)
 #### 5. Example Output
 The output will be a side-by-side comparison of the input grayscale image and the colorized result, saved as `output.jpg`. For a sample result, see the example below:
 
-<img src="./docs/assets/model_output.png" alt="Model Output">
+<table>
+  <tr>
+    <th>Input Image</th>
+    <th>Model Name</th>
+    <th>Output Image</th>
+  </tr>
+  <tr>
+    <td rowspan="3"><img src="assets/input/input_1.jpg" alt="Input 1"></td>
+    <td>Autoencoder</td>
+    <td><img src="assets/autoencoder/autoencoder_output_1.jpg" alt="Autoencoder Output 1"></td>
+  </tr>
+  <tr>
+    <td>Unet</td>
+    <td><img src="assets/unet/unet_output_1.jpg" alt="Unet Output 1"></td>
+  </tr>
+  <tr>
+    <td>Transformer</td>
+    <td><img src="assets/transformer/transformer_output_1.jpg" alt="Transformer Output 1"></td>
+  </tr>
+  <tr>
+    <td rowspan="3"><img src="assets/input/input_2.jpg" alt="Input 2"></td>
+    <td>Autoencoder</td>
+    <td><img src="assets/autoencoder/autoencoder_output_2.jpg" alt="Autoencoder Output 2"></td>
+  </tr>
+  <tr>
+    <td>Unet</td>
+    <td><img src="assets/unet/unet_output_2.jpg" alt="Unet Output 2"></td>
+  </tr>
+  <tr>
+    <td>Transformer</td>
+    <td><img src="assets/transformer/transformer_output_2.jpg" alt="Transformer Output 2"></td>
+  </tr>
+</table>
+<!-- <img src="./docs/assets/model_output.png" alt="Model Output"> -->
 
 ## Training Hyperparameters
 - **Resolution**: 
