@@ -26,7 +26,7 @@
 </div>
 
 ## Introduction
-Transform grayscale landscape images into vibrant, full-color visuals with this autoencoder model. Built from scratch, this project leverages deep learning to predict color channels (a*b* in L*a*b* color space) from grayscale inputs, delivering impressive results with a sleek, minimalist design. 🌄
+Transform grayscale landscape images into vibrant, full-color visuals with this AutoEncoder, U-Net, Transformer models. Built from scratch, this project leverages deep learning to predict color channels (a*b* in L*a*b* color space) from grayscale inputs, delivering impressive results with a sleek, minimalist design. 🌄
 
 ## Key Features
 - 📸 Converts grayscale landscape images to vivid RGB.
