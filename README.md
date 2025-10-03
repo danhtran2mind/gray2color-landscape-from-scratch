@@ -128,7 +128,7 @@ load_model_path = "./ckpts/best_model.h5"
 os.makedirs(os.path.dirname(load_model_path), exist_ok=True)
 
 if not os.path.exists(load_model_path):
-    url = "https://huggingface.co/danhtran2mind/autoencoder-gray2color-landscape/resolve/main/ckpts/best_model.h5"
+    url = "https://huggingface.co/danhtran2mind/gray2color-landscape/resolve/main/ckpts/best_model.h5"
     print(f"Downloading model from {url}...")
     with requests.get(url, stream=True) as response:
         response.raise_for_status()
